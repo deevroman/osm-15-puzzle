@@ -395,7 +395,43 @@ const generateMap = (mapId = 'world') => {
       tile._currX = x;
       tile._currY = y;
       tile.classList.add('tile');
-      tile.style.backgroundImage = `url(https://tile.openstreetmap.org/${map.z0}/${map.x0 + x}/${map.y0 + y}.png)`;
+
+      function getRandomTile(x, y, z) {
+        // from https://github.com/Zverik/openwhatevermap
+        const whateverLayer = [
+          ['https://tile.openstreetmap.org/{z}/{x}/{y}.png', 'OpenStreetMap Carto', 'OpenStreetMap', 'https://www.openstreetmap.org/'],
+          ['https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', 'Humanitarian', 'Humanitarian OpenStreetMap Team', 'http://hot.openstreetmap.org/'],
+          ['https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', 'OpenStreetMap.de', 'OpenStreetMap Deutschland', 'https://www.openstreetmap.de/'],
+          ['https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', 'OpenStreetMap.fr', 'OpenStreetMap France', 'https://www.openstreetmap.fr/'],
+          // ['https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', 'Hydda Full', 'OpenStreetMap Sweden', 'http://openstreetmap.se/'],
+          ['http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', 'CartoDB Positron', 'Carto', 'https://carto.com/attribution/'],
+          ['http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', 'CartoDB Dark Matter', 'Carto', 'https://carto.com/attribution/'],
+          ['https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}{r}.png', 'Toner', 'Stadia / Stamen', 'https://stadiamaps.com/stamen/'],
+          ['https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}.png', 'Toner Lite', 'Stadia / Stamen', 'https://stadiamaps.com/stamen/'],
+          ['https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg', 'Watercolor', 'Stadia / Stamen', 'https://stadiamaps.com/stamen/'],
+          ['https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.jpg', 'Terrain', 'Stadia / Stamen', 'https://stadiamaps.com/stamen/'],
+          // ['http://{s}.tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png', 'Hike & Bike', 'Colin Marquardt', 'http://hikebikemap.org/'],
+          ['http://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png', 'ÖPNV Karte', 'ÖPNV Karte', 'https://www.öpnvkarte.de/'],
+          ['https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', 'OpenTopoMap', 'OpenTopoMap', 'https://opentopomap.org/'],
+          ['https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}{r}.png?apikey=41f4f936f1d148f69cbd100812875c88', 'OpenCycleMap', 'Thunderforest', 'https://thunderforest.com/'],
+          ['https://{s}.tile.thunderforest.com/transport-dark/{z}/{x}/{y}{r}.png?apikey=41f4f936f1d148f69cbd100812875c88', 'Transport Dark', 'Thunderforest', 'https://thunderforest.com/'],
+          ['https://{s}.tile.thunderforest.com/spinal-map/{z}/{x}/{y}{r}.png?apikey=41f4f936f1d148f69cbd100812875c88', 'Spinal Map', 'Thunderforest', 'https://thunderforest.com/'],
+          ['https://{s}.tile.thunderforest.com/pioneer/{z}/{x}/{y}{r}.png?apikey=41f4f936f1d148f69cbd100812875c88', 'Pioneer', 'Thunderforest', 'https://thunderforest.com/'],
+          ['https://{s}.tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}{r}.png?apikey=41f4f936f1d148f69cbd100812875c88', 'Mobile Atlas', 'Thunderforest', 'https://thunderforest.com/'],
+          ['https://tile.tracestrack.com/base/{z}/{x}/{y}.png?key=4c48d8f341fe037a61c66f57fa54e3a9', 'Carto', 'Tracestrack', 'https://www.tracestrack.com/'],
+          ['https://tile.tracestrack.com/topo/{z}/{x}/{y}.png?key=4c48d8f341fe037a61c66f57fa54e3a9', 'Topo', 'Tracestrack', 'https://www.tracestrack.com/'],
+          ['https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', 'CyclOSM', 'CyclOSM', 'https://www.cyclosm.org/']
+        ];
+        function isRetinaDisplay() {
+          if (window.matchMedia) {
+            var mq = window.matchMedia("only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen  and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)");
+            return (mq && mq.matches || (window.devicePixelRatio > 1));
+          }
+        }
+        return whateverLayer[Math.floor(Math.random()*whateverLayer.length)][0].replace("{x}", x).replace("{y}", y).replace("{z}", z).replace("{s}", "a").replace("{r}", isRetinaDisplay() ? '@2x' : '');
+      }
+      // tile.style.backgroundImage = `url(https://tile.openstreetmap.org/${map.z0}/${map.x0 + x}/${map.y0 + y}.png)`;
+      tile.style.backgroundImage = `url(${getRandomTile(map.x0 + x, map.y0 + y, map.z0)})`;
       tile.style.left = ((TILE_WIDTH + TILE_SPACING) * x) + 'px';
       tile.style.top  = ((TILE_WIDTH + TILE_SPACING) * y) + 'px';
 
