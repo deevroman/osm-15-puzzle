@@ -428,7 +428,7 @@ const generateMap = (mapId = 'world') => {
             return (mq && mq.matches || (window.devicePixelRatio > 1));
           }
         }
-        return whateverLayer[Math.floor(Math.random()*whateverLayer.length)][0].replace("{x}", x).replace("{y}", y).replace("{z}", z).replace("{s}", "a").replace("{r}", isRetinaDisplay() ? '@2x' : '');
+        return whateverLayer[Math.floor(Math.random()*whateverLayer.length)][0].replace("{x}", x).replace("{y}", y).replace("{z}", z).replace("{s}", "a").replace("{r}", false ? '@2x' : '');
       }
       // tile.style.backgroundImage = `url(https://tile.openstreetmap.org/${map.z0}/${map.x0 + x}/${map.y0 + y}.png)`;
       tile.style.backgroundImage = `url(${getRandomTile(map.x0 + x, map.y0 + y, map.z0)})`;
