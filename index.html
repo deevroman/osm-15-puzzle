@@ -431,10 +431,14 @@ const generateMap = (mapId = 'world') => {
             return (mq && mq.matches || (window.devicePixelRatio > 1));
           }
         }
-        return whateverLayer[Math.floor(Math.random()*whateverLayer.length)][0].replace("{x}", x).replace("{y}", y).replace("{z}", z).replace("{s}", "a").replace("{r}", false ? '@2x' : '');
+        return whateverLayer[Math.floor(Math.random()*whateverLayer.length)];
       }
       // tile.style.backgroundImage = `url(https://tile.openstreetmap.org/${map.z0}/${map.x0 + x}/${map.y0 + y}.png)`;
-      tile.style.backgroundImage = `url(${getRandomTile(map.x0 + x, map.y0 + y, map.z0)})`;
+      const randomTile = getRandomTile(map.x0 + x, map.y0 + y, map.z0)
+      const url = randomTile[0].replace("{x}", x).replace("{y}", y).replace("{z}", z).replace("{s}", "a").replace("{r}", false ? '@2x' : '');
+      tile.title = "Map Style: " + randomTile[1] + "\n" + randomTile[2] + "\nClick with Shift key for open tile provider";
+      tile.setAttribute("attribution-url", randomTile[3]);
+      tile.style.backgroundImage = `url(${url})`;
       tile.style.left = ((TILE_WIDTH + TILE_SPACING) * x) + 'px';
       tile.style.top  = ((TILE_WIDTH + TILE_SPACING) * y) + 'px';
 
@@ -532,6 +536,10 @@ const handleKeydown = (evt) => {
 };
 
 const handleTileClick = (evt) => {
+  if (evt.shiftKey) {
+    window.open(evt.target.getAttribute("attribution-url"), "_blank");
+    return;
+  }
 
   if (!CanMove) return;
 
