@@ -436,7 +436,7 @@ const generateMap = (mapId = 'world') => {
       // tile.style.backgroundImage = `url(https://tile.openstreetmap.org/${map.z0}/${map.x0 + x}/${map.y0 + y}.png)`;
       const randomTile = getRandomTile()
       const url = randomTile[0].replace("{x}", map.x0 + x).replace("{y}", map.y0 + y).replace("{z}", map.z0).replace("{s}", "a").replace("{r}", false ? '@2x' : '');
-      tile.title = "Map Style: " + randomTile[1] + "\n" + randomTile[2] + "\nClick with Shift key for open tile provider";
+      tile.title = "Map Style: " + randomTile[1] + "\n© " + randomTile[2] + "\nClick with Shift key for more info";
       tile.setAttribute("attribution-url", randomTile[3]);
       tile.style.backgroundImage = `url(${url})`;
       tile.style.left = ((TILE_WIDTH + TILE_SPACING) * x) + 'px';
