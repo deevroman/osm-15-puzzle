@@ -399,7 +399,7 @@ const generateMap = (mapId = 'world') => {
       tile._currY = y;
       tile.classList.add('tile');
 
-      function getRandomTile(x, y, z) {
+      function getRandomTile() {
         // from https://github.com/Zverik/openwhatevermap
         const whateverLayer = [
           ['https://tile.openstreetmap.org/{z}/{x}/{y}.png', 'OpenStreetMap Carto', 'OpenStreetMap', 'https://www.openstreetmap.org/'],
@@ -434,8 +434,8 @@ const generateMap = (mapId = 'world') => {
         return whateverLayer[Math.floor(Math.random()*whateverLayer.length)];
       }
       // tile.style.backgroundImage = `url(https://tile.openstreetmap.org/${map.z0}/${map.x0 + x}/${map.y0 + y}.png)`;
-      const randomTile = getRandomTile(map.x0 + x, map.y0 + y, map.z0)
-      const url = randomTile[0].replace("{x}", x).replace("{y}", y).replace("{z}", z).replace("{s}", "a").replace("{r}", false ? '@2x' : '');
+      const randomTile = getRandomTile()
+      const url = randomTile[0].replace("{x}", map.x0 + x).replace("{y}", map.y0 + y).replace("{z}", map.z0).replace("{s}", "a").replace("{r}", false ? '@2x' : '');
       tile.title = "Map Style: " + randomTile[1] + "\n" + randomTile[2] + "\nClick with Shift key for open tile provider";
       tile.setAttribute("attribution-url", randomTile[3]);
       tile.style.backgroundImage = `url(${url})`;
